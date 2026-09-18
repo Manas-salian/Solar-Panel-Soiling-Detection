@@ -1,0 +1,27 @@
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Dataset folders (too large for GitHub)
+data/
+raw_data/
+*.zip
+*.tar.gz
+
+# Large model binaries (>100MB / binary weights)
+# If you want to push models, use Git LFS or releases
+outputs/*.keras
+outputs/*.h5
+
+# OS / IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -333,7 +333,8 @@ with tab_about:
         technician only where it is needed.
 
         ### Pipeline
-        1. **Data** – Kaggle *Faulty solar panel* image set (six folders of web-scraped photos).
+        1. **Data** – Kaggle [*Solar panel clean and faulty images*](https://www.kaggle.com/datasets/pythonafroz/solar-panel-clean-and-faulty-images)
+           (six folders of web-scraped photos, 885 files).
            `scripts/prepare_dataset.py` verifies every file, removes exact and near-duplicate images
            (a perceptual hash catches re-encoded copies), drops images that appear under two labels,
            and makes a stratified 70/15/15 split.

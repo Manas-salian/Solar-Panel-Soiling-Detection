@@ -1,186 +1,190 @@
-# ☀️ Solar Panel Soiling Detection
+# ☀️ Solar Panel Fault & Soiling Detection
 
-An AI-powered computer vision system that automatically detects whether a solar panel is **Clean** or **Dusty / Soiled** from photos using Deep Learning (**MobileNetV2 Transfer Learning**).
+A computer-vision system that inspects a photo of a solar panel, classifies its condition into one
+of **six classes**, and turns that into a maintenance decision (severity + recommended action).
+Built with PyTorch transfer learning and served through a Streamlit dashboard with Grad-CAM
+explanations.
 
----
-
-## 📌 Why This Matters
-
-Dust, sand, and bird droppings accumulate on solar panels over time, reducing solar energy efficiency and power output by up to 25–40%. Automating soiling detection from camera images enables solar farm operators to schedule cleaning only when needed—saving water, reducing maintenance costs, and maximizing clean energy production.
-
----
-
-## 🧠 Why MobileNetV2 over Standard CNNs?
-
-### 🥊 Head-to-Head Comparison
-
-| Feature | Standard CNN (e.g., ResNet-50) | MobileNet (e.g., MobileNetV2) | Winner |
-| :--- | :--- | :--- | :---: |
-| **Accuracy** | Higher *(Slightly better at catching complex, granular details)* | Moderate to High *(Very close to standard CNNs, but slightly lower)* | **Standard CNN** |
-| **Speed / Latency** | Slower *(Takes longer to process an image)* | Blazing Fast *(Processes images in milliseconds on low-power chips)* | **MobileNet** 🏆 |
-| **File Size** | Large *(Can easily be 100MB to 500MB+)* | Tiny *(Usually around 10MB to 15MB)* | **MobileNet** 🏆 |
-| **Hardware Required** | Strong Cloud Servers or Dedicated PC GPUs | Smartphones, Raspberry Pi, Edge Devices, Web Browsers | **MobileNet (for flexibility)** 🏆 |
-
-### 💡 Why We Prefer MobileNetV2 for Solar Soiling Detection:
-1. **Edge & Drone / Robot Deployment**: Solar installations are often located in remote areas, deserts, or rooftops without high-end GPU servers. MobileNetV2 can run directly on drones, cleaning robots, Raspberry Pis, or embedded IoT microcontrollers.
-2. **Real-Time Speed & Low Power Consumption**: Thanks to *Depthwise Separable Convolutions*, MobileNetV2 drastically reduces FLOPs (floating point operations) and battery drain.
-3. **Instant Web App Inference**: The small file size (~14 MB) allows instant model loading in web applications (like Streamlit) and mobile apps with near-zero latency.
-4. **Optimal Accuracy vs. Resource Trade-off**: For binary classification (Clean vs. Dusty), MobileNetV2 provides high accuracy (~80-90% AUC) without the excessive computational overhead of large 50+ layer networks.
+| Class | Severity | What the operator should do |
+|---|---|---|
+| Clean | none | Nothing |
+| Dusty / Soiled | moderate | Schedule a wash (soiling costs 5–25 % output) |
+| Bird Droppings | moderate | Spot-clean; local shading creates hot-spots |
+| Snow Covered | low | Usually self-clears; clear manually only if prolonged |
+| Physical Damage | high | On-site inspection; cracked glass usually means replacement |
+| Electrical Damage | critical | Isolate string, dispatch technician; fire risk |
 
 ---
 
-## 📂 Project Structure
+## 📊 Results
+
+<!-- RESULTS:START -->
+**Selected model: `convnext_tiny`** (highest validation macro-F1 (ties -> fewer parameters)).
+
+| Backbone | Params (M) | Val macro-F1 | Test accuracy | Test macro-F1 | Test ROC-AUC | CPU ms/img | GPU ms/img | Best epoch |
+|---|---|---|---|---|---|---|---|---|
+| mobilenet_v3_large | 4.21 | 0.882 | 90.6% | 0.911 | 0.988 | 7.3 | 3.4 | 23 |
+| efficientnet_v2_s | 20.19 | 0.930 | 88.8% | 0.901 | 0.986 | 28.2 | 9.7 | 15 |
+| **convnext_tiny** ✓ | 27.82 | 0.937 | 93.5% | 0.932 | 0.997 | 25.6 | 3.5 | 12 |
+
+Per-class test results for `convnext_tiny` (107 test images, top-2 accuracy 99.1%):
+
+| Class | Precision | Recall | F1 | Test images |
+|---|---|---|---|---|
+| Bird Droppings | 0.90 | 0.95 | 0.93 | 20 |
+| Clean | 0.90 | 1.00 | 0.95 | 27 |
+| Dusty / Soiled | 1.00 | 0.81 | 0.89 | 26 |
+| Electrical Damage | 1.00 | 1.00 | 1.00 | 12 |
+| Physical Damage | 0.78 | 0.88 | 0.82 | 8 |
+| Snow Covered | 1.00 | 1.00 | 1.00 | 14 |
+
+![Confusion matrix](outputs/confusion_matrix.png)
+![Training curves](outputs/training_curves.png)
+
+For reference, the previous version of this project (binary clean/dusty, Keras MobileNetV2, un-deduplicated data) reached 77.2 % test accuracy with a dusty-class recall of 0.59.
+<!-- RESULTS:END -->
+
+All numbers are on a held-out test split (15 %) that was never used for model selection. The
+winning backbone is chosen on the *validation* split by macro-F1, so every class counts equally
+regardless of how many test images it has.
+
+---
+
+## 🗂️ Dataset
+
+**Source:** the Kaggle *Faulty solar panel* image set (six folders of web-scraped photos:
+`Bird-drop`, `Clean`, `Dusty`, `Electrical-damage`, `Physical-Damage`, `Snow-Covered`).
+Download it and place it at `Faulty_solar_panel/` in the project root (the folder is git-ignored).
+
+The raw download is noisy. `scripts/prepare_dataset.py` cleans it before any training happens:
+
+| Stage | Images | Notes |
+|---|---|---|
+| Collected (recursive, incl. `Bird-drop/New/`) | 885 | `desktop.ini` and other non-images ignored |
+| Readable | 885 | none corrupt |
+| After exact de-duplication (MD5) | 794 | 91 byte-identical copies |
+| After near-duplicate removal (dHash, Hamming ≤ 4) | 713 | 79 re-encoded/resized copies + 2 images filed under two different labels |
+
+Without this step the same photo lands in both train and test, and the metrics lie.
+
+Stratified split, 70 / 15 / 15 per class, seed 42:
+
+| Class | Train | Val | Test |
+|---|---|---|---|
+| bird_drop | 90 | 19 | 20 |
+| clean | 126 | 27 | 27 |
+| dusty | 125 | 27 | 26 |
+| electrical_damage | 55 | 12 | 12 |
+| physical_damage | 34 | 7 | 8 |
+| snow_covered | 69 | 15 | 14 |
+| **total** | **499** | **107** | **107** |
+
+The repository also contains a pointer to the *Deep Solar Eye* dataset
+(`Solar_Panel_Soiling_Image_dataset/`, 45 754 fixed-camera 192×192 frames with a continuous
+power-loss label). It is a different domain (one panel, one camera, 15 days) and is **not** used
+for training here; it is a natural next step for a soiling-*regression* model.
+
+---
+
+## 🧠 Method
+
+1. **Backbone** – ImageNet-pretrained CNN from `torchvision` with the final layer replaced by a
+   6-way head. Three candidates are trained and compared by default:
+   `mobilenet_v3_large` (edge-friendly), `efficientnet_v2_s`, `convnext_tiny`.
+2. **Two-stage fine-tuning**
+   * *Warm-up* – backbone frozen (BatchNorm statistics fixed), train only the new head.
+   * *Fine-tune* – everything trainable with discriminative learning rates (backbone 1e-4, head
+     1e-3), 1-epoch linear warm-up then cosine decay, AdamW, label smoothing 0.1,
+     class-weighted cross-entropy for the imbalance, bf16 autocast, gradient clipping,
+     early stopping on validation macro-F1.
+3. **Augmentation** – random-resized-crop, flips, small rotations, mild colour jitter, random
+   erasing. Evaluation uses a plain squash-resize so panel edges are never cropped away.
+4. **Selection** – best validation macro-F1 wins (ties → fewer parameters). Test metrics
+   (accuracy, macro-F1, ROC-AUC, per-class P/R/F1, confusion matrix) are computed once afterwards.
+5. **Inference** – horizontal-flip test-time augmentation, low-confidence and close-call
+   flagging for manual review, and Grad-CAM heat-maps so a user can see *where* the model looked.
+
+---
+
+## 📂 Project structure
 
 ```text
-solar-panel-soiling-detection/
-├── app.py                     # Streamlit Web App (Live UI for testing images)
-├── main.py                    # Main training & evaluation script
-├── requirements.txt           # Python dependencies
-├── README.md                  # Project documentation
-│
-├── src/                       # Core model & processing code
-│   ├── config.py              # Configuration & hyperparameters
-│   ├── data_loader.py         # Dataset loading, batching & data augmentation
-│   ├── model.py               # MobileNetV2 architecture & fine-tuning logic
-│   ├── train.py               # Training routines (frozen backbone + fine-tune)
-│   └── evaluate.py            # Metrics calculation & confusion matrix plots
-│
-├── scripts/                   # Helper utility scripts
-│   ├── clean_dataset.py       # Scans & repairs bad/corrupt image files
-│   ├── prepare_dataset.py     # Splits raw dataset into train / val / test sets
-│   └── predict.py             # CLI tool to predict a single image
-│
-├── raw_data/                  # Raw images before splitting
-│   ├── clean/                 # Clean panel photos
-│   └── dusty/                 # Dusty / soiled panel photos
-│
-├── data/                      # Auto-generated train/val/test splits
-│   ├── train/ (clean & dusty)
-│   ├── val/   (clean & dusty)
-│   └── test/  (clean & dusty)
-│
-└── outputs/                   # Generated models, metrics, and visualization plots
-    ├── solar_soiling_final_model.keras
-    ├── metrics.json
-    ├── confusion_matrix.png
-    └── training_curves_finetune.png
+.
+├── app.py                     # Streamlit dashboard (inspect / performance / dataset / about)
+├── main.py                    # Train + compare backbones, export outputs/final_model.pt
+├── requirements.txt
+├── src/
+│   ├── config.py              # Paths, class names & metadata, hyper-parameters
+│   ├── data.py                # ImageFolder datasets, augmentation, DataLoaders, class weights
+│   ├── model.py               # torchvision backbone factory, head swap, freeze helpers
+│   ├── train.py               # Two-stage fine-tuning loop with early stopping
+│   ├── evaluate.py            # Metrics, confusion matrix & training-curve plots
+│   ├── gradcam.py             # Grad-CAM implementation
+│   └── inference.py           # Predictor: load checkpoint, predict, summarise, explain
+├── scripts/
+│   ├── prepare_dataset.py     # Verify → de-duplicate → stratified split → JSON report
+│   └── predict.py             # CLI prediction (text or JSON, optional Grad-CAM export)
+├── Faulty_solar_panel/        # Raw Kaggle download (git-ignored)
+├── data/                      # Generated train/val/test (git-ignored)
+└── outputs/
+    ├── final_model.pt         # Self-describing checkpoint used by the app (git-ignored)
+    ├── metrics.json           # Test metrics of the selected model
+    ├── comparison.json / .md  # Backbone leaderboard
+    ├── dataset_report.json    # What prepare_dataset.py removed and why
+    ├── confusion_matrix.png, training_curves.png
+    └── runs/<backbone>/       # Per-backbone metrics, history and plots
 ```
 
 ---
 
-## 🚀 Quick Start Guide
+## 🚀 Quick start
 
-### Step 1: Environment Setup
+```bash
+# 1. Environment (Python 3.10+). Install torch/torchvision for your CUDA version first:
+#    https://pytorch.org/get-started/locally/
+python -m venv venv && source venv/bin/activate      # Windows: .\venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 
-1. Open a terminal in the project root directory.
-2. Create and activate a Python virtual environment:
+# 2. Data: put the Kaggle folder at ./Faulty_solar_panel, then clean + split it
+python scripts/prepare_dataset.py --raw_dir Faulty_solar_panel --out_dir data
 
-   **Windows (PowerShell):**
-   ```powershell
-   python -m venv venv
-   .\venv\Scripts\Activate.ps1
-   ```
+# 3. Train (all three backbones, ~5 min on a 6 GB laptop GPU) ...
+python main.py
+#    ... or a single one
+python main.py --backbones efficientnet_v2_s --epochs 30
 
-   **Mac / Linux:**
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-
-3. Install required libraries:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
----
-
-### Step 2: Prepare & Clean Your Dataset
-
-1. Place your raw images inside `raw_data/`:
-   - `raw_data/clean/` — photos of clean panels
-   - `raw_data/dusty/` — photos of dusty / soiled panels
-
-2. **Clean corrupt files & fix image headers:**
-   ```powershell
-   python scripts/clean_dataset.py --root raw_data
-   ```
-
-3. **Split into Train (70%), Validation (15%), and Test (15%) sets:**
-   ```powershell
-   Remove-Item -Recurse -Force data\train, data\val, data\test -ErrorAction SilentlyContinue
-   python scripts/prepare_dataset.py --raw_dir raw_data --out_dir data
-   ```
-
----
-
-### Step 3: Train the Model
-
-Run the training pipeline:
-
-```powershell
-python main.py --data_dir data --epochs 15 --fine_tune_epochs 5 --out_dir outputs
-```
-
-**What happens during training:**
-- **Stage 1:** Trains classification head with a frozen MobileNetV2 backbone (15 epochs).
-- **Stage 2:** Unfreezes the top backbone layers for fine-tuning (5 epochs).
-- **Evaluation:** Automatically tests the best checkpoint on the unseen test set and saves performance metrics and plots to `outputs/`.
-
----
-
-### Step 4: Launch the Web Dashboard
-
-To run the interactive Streamlit dashboard:
-
-```powershell
+# 4. Dashboard
 streamlit run app.py
+
+# 5. Command line
+python scripts/predict.py path/to/panel.jpg --cam outputs/cams
 ```
 
-**Features in the Web App:**
-- **🔍 Try It Tab:** Drag & drop any solar panel photo to get an instant **Clean vs. Dusty** classification with a confidence score and action recommendation.
-- **📊 Training Results Tab:** View loss/accuracy curves, test confusion matrix, and precision/recall metrics.
-- **ℹ️ About Tab:** Project background and model specifications.
+`main.py` options: `--backbones`, `--epochs`, `--warmup_epochs`, `--patience`, `--img_size`,
+`--batch_size`, `--num_workers`, `--seed`, `--data_dir`, `--out_dir`.
 
 ---
 
-### Step 5: Test a Single Image via Command Line
+## 🖥️ Dashboard
 
-You can also run quick predictions directly from your terminal on any image:
-
-```powershell
-python scripts/predict.py --image "path/to/panel_photo.jpg" --model outputs/solar_soiling_final_model.keras
-```
-
----
-
-## 📊 Model Performance & Artifacts
-
-After training, all artifacts are saved to `outputs/`:
-- `solar_soiling_final_model.keras` — Ready-to-deploy trained model.
-- `metrics.json` — Detailed precision, recall, and F1-score numbers.
-- `confusion_matrix.png` — Visual breakdown of true vs. predicted classes.
-- `training_curves_finetune.png` — Accuracy & Loss curves across epochs.
+* **Inspect panels** – drop one or many photos. Each gets a label, severity badge, confidence,
+  recommended action, full probability bar chart and a Grad-CAM overlay. Batches get a
+  severity-sorted summary table with CSV export. A button loads one random test image per class
+  for a quick demo. Sidebar toggles: TTA, Grad-CAM, confidence threshold, close-call margin.
+* **Model performance** – test metrics, per-class precision/recall/F1, confusion matrix,
+  training curves, backbone leaderboard.
+* **Dataset** – the de-duplication funnel, per-class split counts, one example per class, and
+  the list of label-conflict images that were dropped.
 
 ---
 
-## 🎯 Fine-Tuning Logic (How to Adapt It)
+## ⚠️ Limitations & next steps
 
-**Fine-tuning** is the process of taking a **MobileNetV2** model that has already been trained on a massive dataset (like *ImageNet* with 1.4 million images and 1,000 general categories) and tweaking it to solve your specific task (e.g., detecting clean vs. dusty solar panels).
-
-### 🪜 The 4 Logical Steps for Fine-Tuning MobileNetV2:
-
-1. **Step 1: Freeze the Base Layers**
-   - The early layers of the pre-trained MobileNetV2 backbone are frozen so their weights remain fixed.
-   - These layers have already mastered fundamental, "general" visual features like edges, curves, gradients, and textures.
-
-2. **Step 2: Replace the Classification Head**
-   - The original ImageNet model ends with a dense layer meant to classify 1,000 general object categories.
-   - We replace this layer with a custom classification head tailored to our task (`GlobalAveragePooling2D` → `Dropout(0.2)` → `Dense(1, activation='sigmoid')` for binary Clean vs. Dusty classification).
-
-3. **Step 3: Train the Top Head First**
-   - We train only the new custom classification head for a set number of epochs (e.g., 15 epochs) while keeping the backbone frozen.
-   - This initializes the new head and prevents large initial gradients from destroying pre-trained feature weights.
-
-4. **Step 4: Unfreeze & Fine-Tune (Top Layers)**
-   - We unfreeze the top layers of the MobileNetV2 backbone and retrain the model end-to-end for a few additional epochs (e.g., 5 epochs).
-   - A very low learning rate (e.g., `1e-5`) is used to gently adapt higher-level feature detectors to specific dust, grime, and soiling patterns without forgetting general visual features.
+* ~700 unique images; `physical_damage` has 34 training examples. More data for the rare
+  classes is the single biggest lever left.
+* Web-scraped photos vary in camera, angle and lighting; performance on a fixed inspection rig
+  will differ. Fine-tune on a few hundred in-domain images before deployment.
+* One label per image. For per-cell localisation, use the Grad-CAM map or move to detection /
+  segmentation.
+* Deep Solar Eye could be used to add a soiling-*level* regression head.
+* k-fold cross-validation would give tighter confidence intervals on the small test set.

@@ -1,0 +1,99 @@
+Device: cuda (NVIDIA GeForce RTX 4050 Laptop GPU)
+Backbones: ['mobilenet_v3_large', 'efficientnet_v2_s', 'convnext_tiny']
+Train class counts: {'bird_drop': 90, 'clean': 126, 'dusty': 125, 'electrical_damage': 55, 'physical_damage': 34, 'snow_covered': 69}
+
+=== mobilenet_v3_large ===
+  [mobilenet_v3_large] warm-up    1/3  train loss 1.446 acc 0.497 | val loss 0.842 acc 0.766 macroF1 0.739
+  [mobilenet_v3_large] warm-up    2/3  train loss 0.967 acc 0.754 | val loss 0.657 acc 0.813 macroF1 0.798
+  [mobilenet_v3_large] warm-up    3/3  train loss 0.879 acc 0.842 | val loss 0.667 acc 0.841 macroF1 0.836
+  [mobilenet_v3_large] fine-tune  1/30  train loss 1.228 acc 0.611 | val loss 0.693 acc 0.776 macroF1 0.772
+  [mobilenet_v3_large] fine-tune  2/30  train loss 0.917 acc 0.802 | val loss 0.770 acc 0.785 macroF1 0.765
+  [mobilenet_v3_large] fine-tune  3/30  train loss 0.828 acc 0.868 | val loss 0.675 acc 0.794 macroF1 0.777
+  [mobilenet_v3_large] fine-tune  4/30  train loss 0.720 acc 0.904 | val loss 0.619 acc 0.813 macroF1 0.803
+  [mobilenet_v3_large] fine-tune  5/30  train loss 0.705 acc 0.924 | val loss 0.612 acc 0.822 macroF1 0.825
+  [mobilenet_v3_large] fine-tune  6/30  train loss 0.670 acc 0.936 | val loss 0.557 acc 0.832 macroF1 0.832
+  [mobilenet_v3_large] fine-tune  7/30  train loss 0.663 acc 0.934 | val loss 0.566 acc 0.850 macroF1 0.849
+  [mobilenet_v3_large] fine-tune  8/30  train loss 0.622 acc 0.968 | val loss 0.477 acc 0.869 macroF1 0.880
+  [mobilenet_v3_large] fine-tune  9/30  train loss 0.600 acc 0.980 | val loss 0.539 acc 0.850 macroF1 0.854
+  [mobilenet_v3_large] fine-tune 10/30  train loss 0.608 acc 0.968 | val loss 0.523 acc 0.860 macroF1 0.874
+  [mobilenet_v3_large] fine-tune 11/30  train loss 0.575 acc 0.990 | val loss 0.537 acc 0.850 macroF1 0.865
+  [mobilenet_v3_large] fine-tune 12/30  train loss 0.573 acc 0.990 | val loss 0.567 acc 0.869 macroF1 0.873
+  [mobilenet_v3_large] fine-tune 13/30  train loss 0.559 acc 0.992 | val loss 0.577 acc 0.869 macroF1 0.882
+  [mobilenet_v3_large] fine-tune 14/30  train loss 0.571 acc 0.998 | val loss 0.564 acc 0.860 macroF1 0.876
+  [mobilenet_v3_large] fine-tune 15/30  train loss 0.562 acc 0.988 | val loss 0.557 acc 0.841 macroF1 0.845
+  [mobilenet_v3_large] fine-tune 16/30  train loss 0.553 acc 0.992 | val loss 0.585 acc 0.841 macroF1 0.859
+  [mobilenet_v3_large] fine-tune 17/30  train loss 0.548 acc 0.996 | val loss 0.586 acc 0.850 macroF1 0.857
+  [mobilenet_v3_large] fine-tune 18/30  train loss 0.543 acc 0.994 | val loss 0.569 acc 0.860 macroF1 0.874
+  [mobilenet_v3_large] fine-tune 19/30  train loss 0.548 acc 0.994 | val loss 0.595 acc 0.850 macroF1 0.869
+  [mobilenet_v3_large] fine-tune 20/30  train loss 0.536 acc 0.996 | val loss 0.584 acc 0.869 macroF1 0.882
+  [mobilenet_v3_large] fine-tune 21/30  train loss 0.534 acc 1.000 | val loss 0.577 acc 0.860 macroF1 0.872
+  [mobilenet_v3_large] fine-tune 22/30  train loss 0.544 acc 1.000 | val loss 0.577 acc 0.841 macroF1 0.853
+  [mobilenet_v3_large] fine-tune 23/30  train loss 0.532 acc 0.996 | val loss 0.577 acc 0.841 macroF1 0.862
+  [mobilenet_v3_large] fine-tune 24/30  train loss 0.534 acc 0.998 | val loss 0.569 acc 0.841 macroF1 0.858
+  [mobilenet_v3_large] fine-tune 25/30  train loss 0.526 acc 1.000 | val loss 0.579 acc 0.860 macroF1 0.874
+  [mobilenet_v3_large] fine-tune 26/30  train loss 0.531 acc 0.998 | val loss 0.577 acc 0.841 macroF1 0.858
+  [mobilenet_v3_large] fine-tune 27/30  train loss 0.534 acc 0.998 | val loss 0.575 acc 0.860 macroF1 0.880
+  [mobilenet_v3_large] fine-tune 28/30  train loss 0.538 acc 0.998 | val loss 0.579 acc 0.860 macroF1 0.876
+  [mobilenet_v3_large] early stop: no val macro-F1 gain for 8 epochs
+  test: acc 0.907  macro-F1 0.911  | 4.21 M params, 7.3 ms/img CPU
+
+=== efficientnet_v2_s ===
+  [efficientnet_v2_s] warm-up    1/3  train loss 1.752 acc 0.337 | val loss 1.623 acc 0.458 macroF1 0.404
+  [efficientnet_v2_s] warm-up    2/3  train loss 1.598 acc 0.463 | val loss 1.502 acc 0.467 macroF1 0.368
+  [efficientnet_v2_s] warm-up    3/3  train loss 1.520 acc 0.509 | val loss 1.422 acc 0.598 macroF1 0.515
+  [efficientnet_v2_s] fine-tune  1/30  train loss 1.682 acc 0.335 | val loss 1.299 acc 0.645 macroF1 0.617
+  [efficientnet_v2_s] fine-tune  2/30  train loss 1.246 acc 0.675 | val loss 0.867 acc 0.785 macroF1 0.773
+  [efficientnet_v2_s] fine-tune  3/30  train loss 0.912 acc 0.810 | val loss 0.662 acc 0.794 macroF1 0.778
+  [efficientnet_v2_s] fine-tune  4/30  train loss 0.799 acc 0.864 | val loss 0.566 acc 0.832 macroF1 0.821
+  [efficientnet_v2_s] fine-tune  5/30  train loss 0.718 acc 0.908 | val loss 0.533 acc 0.869 macroF1 0.858
+  [efficientnet_v2_s] fine-tune  6/30  train loss 0.686 acc 0.924 | val loss 0.531 acc 0.869 macroF1 0.870
+  [efficientnet_v2_s] fine-tune  7/30  train loss 0.641 acc 0.946 | val loss 0.501 acc 0.888 macroF1 0.893
+  [efficientnet_v2_s] fine-tune  8/30  train loss 0.611 acc 0.962 | val loss 0.493 acc 0.888 macroF1 0.889
+  [efficientnet_v2_s] fine-tune  9/30  train loss 0.613 acc 0.966 | val loss 0.494 acc 0.869 macroF1 0.861
+  [efficientnet_v2_s] fine-tune 10/30  train loss 0.586 acc 0.980 | val loss 0.502 acc 0.897 macroF1 0.903
+  [efficientnet_v2_s] fine-tune 11/30  train loss 0.574 acc 0.986 | val loss 0.481 acc 0.907 macroF1 0.904
+  [efficientnet_v2_s] fine-tune 12/30  train loss 0.570 acc 0.986 | val loss 0.427 acc 0.916 macroF1 0.930
+  [efficientnet_v2_s] fine-tune 13/30  train loss 0.564 acc 0.980 | val loss 0.489 acc 0.897 macroF1 0.898
+  [efficientnet_v2_s] fine-tune 14/30  train loss 0.552 acc 0.990 | val loss 0.487 acc 0.879 macroF1 0.884
+  [efficientnet_v2_s] fine-tune 15/30  train loss 0.541 acc 0.990 | val loss 0.486 acc 0.888 macroF1 0.891
+  [efficientnet_v2_s] fine-tune 16/30  train loss 0.553 acc 0.988 | val loss 0.503 acc 0.879 macroF1 0.878
+  [efficientnet_v2_s] fine-tune 17/30  train loss 0.536 acc 0.994 | val loss 0.448 acc 0.907 macroF1 0.905
+  [efficientnet_v2_s] fine-tune 18/30  train loss 0.533 acc 0.992 | val loss 0.478 acc 0.897 macroF1 0.905
+  [efficientnet_v2_s] fine-tune 19/30  train loss 0.531 acc 0.988 | val loss 0.495 acc 0.907 macroF1 0.915
+  [efficientnet_v2_s] fine-tune 20/30  train loss 0.531 acc 0.992 | val loss 0.495 acc 0.888 macroF1 0.898
+  [efficientnet_v2_s] early stop: no val macro-F1 gain for 8 epochs
+  test: acc 0.888  macro-F1 0.901  | 20.19 M params, 28.2 ms/img CPU
+
+=== convnext_tiny ===
+  [convnext_tiny] warm-up    1/3  train loss 1.681 acc 0.395 | val loss 1.395 acc 0.579 macroF1 0.537
+  [convnext_tiny] warm-up    2/3  train loss 1.369 acc 0.605 | val loss 1.142 acc 0.673 macroF1 0.614
+  [convnext_tiny] warm-up    3/3  train loss 1.198 acc 0.699 | val loss 0.994 acc 0.748 macroF1 0.684
+  [convnext_tiny] fine-tune  1/30  train loss 1.016 acc 0.756 | val loss 0.601 acc 0.785 macroF1 0.747
+  [convnext_tiny] fine-tune  2/30  train loss 0.797 acc 0.870 | val loss 0.525 acc 0.841 macroF1 0.826
+  [convnext_tiny] fine-tune  3/30  train loss 0.673 acc 0.930 | val loss 0.412 acc 0.897 macroF1 0.910
+  [convnext_tiny] fine-tune  4/30  train loss 0.624 acc 0.952 | val loss 0.392 acc 0.916 macroF1 0.916
+  [convnext_tiny] fine-tune  5/30  train loss 0.589 acc 0.976 | val loss 0.402 acc 0.907 macroF1 0.895
+  [convnext_tiny] fine-tune  6/30  train loss 0.571 acc 0.978 | val loss 0.430 acc 0.907 macroF1 0.890
+  [convnext_tiny] fine-tune  7/30  train loss 0.552 acc 0.986 | val loss 0.418 acc 0.907 macroF1 0.896
+  [convnext_tiny] fine-tune  8/30  train loss 0.544 acc 0.988 | val loss 0.435 acc 0.907 macroF1 0.906
+  [convnext_tiny] fine-tune  9/30  train loss 0.538 acc 0.994 | val loss 0.379 acc 0.944 macroF1 0.937
+  [convnext_tiny] fine-tune 10/30  train loss 0.527 acc 0.998 | val loss 0.408 acc 0.925 macroF1 0.923
+  [convnext_tiny] fine-tune 11/30  train loss 0.524 acc 0.998 | val loss 0.423 acc 0.916 macroF1 0.917
+  [convnext_tiny] fine-tune 12/30  train loss 0.524 acc 0.996 | val loss 0.419 acc 0.869 macroF1 0.867
+  [convnext_tiny] fine-tune 13/30  train loss 0.522 acc 0.996 | val loss 0.366 acc 0.935 macroF1 0.927
+  [convnext_tiny] fine-tune 14/30  train loss 0.517 acc 0.998 | val loss 0.388 acc 0.907 macroF1 0.908
+  [convnext_tiny] fine-tune 15/30  train loss 0.512 acc 1.000 | val loss 0.436 acc 0.888 macroF1 0.878
+  [convnext_tiny] fine-tune 16/30  train loss 0.509 acc 1.000 | val loss 0.420 acc 0.897 macroF1 0.895
+  [convnext_tiny] fine-tune 17/30  train loss 0.513 acc 0.998 | val loss 0.385 acc 0.907 macroF1 0.904
+  [convnext_tiny] early stop: no val macro-F1 gain for 8 epochs
+  test: acc 0.935  macro-F1 0.932  | 27.82 M params, 25.6 ms/img CPU
+
+Selected backbone: convnext_tiny (val macro-F1 0.937)
+
+| backbone | params_millions | val_macro_f1 | val_accuracy | test_accuracy | test_macro_f1 | test_roc_auc | latency_cpu_ms | latency_gpu_ms | best_epoch | train_time_min |
+|---|---|---|---|---|---|---|---|---|---|---|
+| mobilenet_v3_large | 4.21 | 0.8817 | 0.8692 | 0.9065 | 0.9109 | 0.9879 | 7.3 | 3.4 | 23 | 1.3 |
+| efficientnet_v2_s | 20.19 | 0.9301 | 0.9159 | 0.8879 | 0.9006 | 0.9858 | 28.2 | 9.7 | 15 | 1.5 |
+| convnext_tiny | 27.82 | 0.9367 | 0.9439 | 0.9346 | 0.9319 | 0.997 | 25.6 | 3.5 | 12 | 1.2 |
+
+Final model -> /home/manas/Desktop/Solar-Panel-Soiling-Detection-using-Deep-Learning/outputs/final_model.pt

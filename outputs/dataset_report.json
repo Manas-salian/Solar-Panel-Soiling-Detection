@@ -1,0 +1,960 @@
+{
+  "raw_dir": "Faulty_solar_panel",
+  "out_dir": "data",
+  "class_names": [
+    "bird_drop",
+    "clean",
+    "dusty",
+    "electrical_damage",
+    "physical_damage",
+    "snow_covered"
+  ],
+  "params": {
+    "train_ratio": 0.7,
+    "val_ratio": 0.15,
+    "phash_thr": 4,
+    "seed": 42
+  },
+  "stage_counts": {
+    "collected": {
+      "bird_drop": 207,
+      "clean": 193,
+      "dusty": 190,
+      "electrical_damage": 103,
+      "physical_damage": 69,
+      "snow_covered": 123
+    },
+    "readable": {
+      "bird_drop": 207,
+      "clean": 193,
+      "dusty": 190,
+      "electrical_damage": 103,
+      "physical_damage": 69,
+      "snow_covered": 123
+    },
+    "after_exact_dedup": {
+      "bird_drop": 159,
+      "clean": 186,
+      "dusty": 182,
+      "electrical_damage": 91,
+      "physical_damage": 63,
+      "snow_covered": 113
+    },
+    "after_near_dedup": {
+      "bird_drop": 129,
+      "clean": 180,
+      "dusty": 178,
+      "electrical_damage": 79,
+      "physical_damage": 49,
+      "snow_covered": 98
+    }
+  },
+  "totals": {
+    "collected": 885,
+    "readable": 885,
+    "after_exact_dedup": 794,
+    "after_near_dedup": 713
+  },
+  "split_counts": {
+    "train": {
+      "bird_drop": 90,
+      "clean": 126,
+      "dusty": 125,
+      "electrical_damage": 55,
+      "physical_damage": 34,
+      "snow_covered": 69
+    },
+    "val": {
+      "bird_drop": 19,
+      "clean": 27,
+      "dusty": 27,
+      "electrical_damage": 12,
+      "physical_damage": 7,
+      "snow_covered": 15
+    },
+    "test": {
+      "bird_drop": 20,
+      "clean": 27,
+      "dusty": 26,
+      "electrical_damage": 12,
+      "physical_damage": 8,
+      "snow_covered": 14
+    }
+  },
+  "removed": {
+    "broken": [],
+    "exact_duplicates": [
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (116).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (118).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (107).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (121).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (109).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (13).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (108).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (130).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (125).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (133).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (11).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (139).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (135).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (142).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (141).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (147).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (144).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (163).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (124).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (168).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (11).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (172).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (17).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (182).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (144).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (183).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (175).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (184).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (176).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (19).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (150).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (194).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (190).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (195).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (132).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (196).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (192).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (197).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (191).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (22).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (176).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (30).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (112).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (38).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (174).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (39).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (143).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (4).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (10).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (40).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (10).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (41).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (37).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (44).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (145).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (46).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (176).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (51).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (162).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (52).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (164).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (53).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (49).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (55).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (165).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (57).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (176).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (58).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (164).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (6).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (144).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (60).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (166).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (62).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (61).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (64).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (178).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (70).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (5).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (74).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (25).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (76).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (77).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (117).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (79).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (119).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (8).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (10).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (80).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (103).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (86).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (119).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (99).jpg",
+        "cls": "bird_drop",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (103).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (157).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (153).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (161).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (150).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (178).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (173).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (188).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (132).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (30).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (183).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (87).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (19).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (90).jpg",
+        "cls": "clean",
+        "duplicate_of": "Faulty_solar_panel/Clean/Clean (19).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (166).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (16).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (172).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (16).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (184).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (183).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (187).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (193).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (23).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (11).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (26).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (105).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (35).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (2).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (83).jpg",
+        "cls": "dusty",
+        "duplicate_of": "Faulty_solar_panel/Dusty/Dust (25).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (29).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (18).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (3).png",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (1).png"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (44).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (37).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (45).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (35).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (63).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (1).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (82).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (74).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (83).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (75).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (84).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (76).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (88).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (32).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (90).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (34).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (91).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (47).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (98).jpg",
+        "cls": "electrical_damage",
+        "duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (20).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (50).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (43).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (51).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (176).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (65).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (55).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (67).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (60).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (69).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (15).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (7).jpg",
+        "cls": "physical_damage",
+        "duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (29).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (105).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (102).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (55).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (50).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (57).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (101).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (58).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (45).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (61).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (112).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (66).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (64).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (67).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (64).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (69).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (68).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (85).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (37).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (90).jpg",
+        "cls": "snow_covered",
+        "duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (64).jpg"
+      }
+    ],
+    "near_duplicates": [
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (174).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (1).jpeg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/New/7.JPG",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (10).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (165).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (107).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (48).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (107).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (190).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (20).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (21).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (43).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (110).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (145).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (112).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (114).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/New/12.JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (18).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (115).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (12).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (125).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (191).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (127).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (137).JPG",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (32).JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (167).JPG",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (32).JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (176).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (140).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (141).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (61).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (143).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (160).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (178).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (160).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (146).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (36).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (67).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (161).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (164).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (7).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (45).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (181).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (65).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (181).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (71).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (189).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (192).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (81).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (87).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (81).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (73).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/New/11.JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (78).jpg",
+        "cls": "bird_drop",
+        "near_duplicate_of": "Faulty_solar_panel/Bird-drop/Bird (83).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (141).JPG",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (10).JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (190).jpg",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (125).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (140).JPG",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (172).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (147).jpg",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (142).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (171).jpg",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (31).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Clean/Clean (39).jpg",
+        "cls": "clean",
+        "near_duplicate_of": "Faulty_solar_panel/Clean/Clean (74).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (170).jpg",
+        "cls": "dusty",
+        "near_duplicate_of": "Faulty_solar_panel/Dusty/Dust (105).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (27).jpg",
+        "cls": "dusty",
+        "near_duplicate_of": "Faulty_solar_panel/Dusty/Dust (105).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (3).jpg",
+        "cls": "dusty",
+        "near_duplicate_of": "Faulty_solar_panel/Dusty/Dust (180).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Dusty/Dust (181).jpg",
+        "cls": "dusty",
+        "near_duplicate_of": "Faulty_solar_panel/Dusty/Dust (36).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (22).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (13).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (16).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (70).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (19).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (70).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (52).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (17).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (57).JPG",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (18).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (21).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (94).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (49).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (94).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (74).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (23).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (34).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (25).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (32).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (58).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (62).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (58).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Electrical-damage/Electrical (9).jpg",
+        "cls": "electrical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Electrical-damage/Electrical (42).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (10).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (34).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (38).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (12).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (15).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (22).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (61).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (22).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (31).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (17).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (24).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (18).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (19).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (43).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (25).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (23).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (47).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (23).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (8).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (23).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (36).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (3).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (59).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (40).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (68).jpg",
+        "cls": "physical_damage",
+        "near_duplicate_of": "Faulty_solar_panel/Physical-Damage/Physical (62).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (5).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (100).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (12).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (103).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (99).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (11).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (17).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (111).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (114).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (8).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (74).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (8).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (116).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (120).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (123).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (122).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (86).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (122).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (15).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (26).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (60).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (26).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (81).JPG",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (28).JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (39).JPG",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (88).JPG"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (48).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (97).jpg"
+      },
+      {
+        "path": "Faulty_solar_panel/Snow-Covered/Snow (59).jpg",
+        "cls": "snow_covered",
+        "near_duplicate_of": "Faulty_solar_panel/Snow-Covered/Snow (53).jpg"
+      }
+    ],
+    "label_conflicts": [
+      {
+        "path": "Faulty_solar_panel/Bird-drop/Bird (3).jpeg",
+        "cls": "bird_drop",
+        "conflicting_classes": [
+          "bird_drop",
+          "physical_damage"
+        ]
+      },
+      {
+        "path": "Faulty_solar_panel/Physical-Damage/Physical (44).jpg",
+        "cls": "physical_damage",
+        "conflicting_classes": [
+          "bird_drop",
+          "physical_damage"
+        ]
+      }
+    ]
+  },
+  "elapsed_sec": 24.8
+}

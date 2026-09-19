@@ -1,7 +1,0 @@
-tensorflow>=2.15
-scikit-learn
-matplotlib
-numpy
-streamlit
-pillow
-flask

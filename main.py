@@ -1,88 +1,156 @@
 """
-Solar Panel Soiling Detection - Main Entry Point
-==================================================
-Ties together data loading, model building, training, fine-tuning,
-and evaluation.
+Solar Panel Fault & Soiling Detection - training entry point
+=============================================================
+Trains one or more pretrained backbones on the 6-class dataset, evaluates each
+on the held-out test split, picks the best by *validation* macro-F1 (so the test
+set never influences model selection), and exports it for the app.
 
 Run from the project root:
-    python main.py --data_dir data --epochs 15 --fine_tune_epochs 5 --out_dir outputs
+    python scripts/prepare_dataset.py --raw_dir Faulty_solar_panel --out_dir data
+    python main.py                                   # default 3-backbone comparison
+    python main.py --backbones efficientnet_v2_s     # single model, faster
 
-See README.md for dataset setup instructions.
+Outputs (in --out_dir):
+    runs/<backbone>/{best_model.pt, metrics.json, history.json, confusion_matrix.png, training_curves.png}
+    comparison.json, comparison.md      leaderboard of all backbones
+    metrics.json, confusion_matrix.png, training_curves.png   copied from the winner
+    final_model.pt                       self-describing checkpoint used by app.py
 """
 
-import os
-import warnings
-import logging
 import argparse
+import datetime as dt
+import json
+import shutil
+from pathlib import Path
 
-# ── Suppress noisy warnings before TF/PIL imports ─────────────────────────────
-os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"          # suppress TF C++ INFO / WARNING
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"         # suppress oneDNN float-point notices
-warnings.filterwarnings("ignore", category=UserWarning)
-logging.getLogger("PIL").setLevel(logging.CRITICAL) # suppress PIL iCCP/sRGB warnings
-logging.getLogger("tensorflow").setLevel(logging.ERROR)
-# ──────────────────────────────────────────────────────────────────────────────
+import torch
 
-import tensorflow as tf
-tf.get_logger().setLevel("ERROR")
+from src.config import (
+    BATCH_SIZE, CLASS_NAMES, COMPARISON_PATH, DATA_DIR, DEFAULT_BACKBONES, DEFAULT_EPOCHS,
+    DEFAULT_WARMUP_EPOCHS, EARLY_STOPPING_PATIENCE, FINAL_MODEL_PATH, IMAGENET_MEAN,
+    IMAGENET_STD, IMG_SIZE, NUM_WORKERS, OUTPUT_DIR, SEED,
+)
+from src.data import build_dataloaders
+from src.evaluate import compute_metrics, plot_confusion_matrix, predict_loader, save_json
+from src.model import SUPPORTED_BACKBONES, count_parameters, measure_latency_ms
+from src.train import train_backbone
 
-from src.data_loader import load_datasets, get_class_weights
-from src.model import build_model
-from src.train import train_initial, train_fine_tune
-from src.evaluate import evaluate_model, plot_history
-from src.config import DEFAULT_EPOCHS, DEFAULT_FINE_TUNE_EPOCHS, DATA_DIR, OUTPUT_DIR
 
+def parse_args():
+    ap = argparse.ArgumentParser(description="Train and compare backbones for solar panel fault detection.")
+    ap.add_argument("--data_dir", default=str(DATA_DIR))
+    ap.add_argument("--out_dir", default=str(OUTPUT_DIR))
+    ap.add_argument("--backbones", default=",".join(DEFAULT_BACKBONES),
+                    help=f"Comma-separated subset of {SUPPORTED_BACKBONES}")
+    ap.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS, help="Max fine-tune epochs (early stopping applies)")
+    ap.add_argument("--warmup_epochs", type=int, default=DEFAULT_WARMUP_EPOCHS, help="Head-only epochs before unfreezing")
+    ap.add_argument("--patience", type=int, default=EARLY_STOPPING_PATIENCE)
+    ap.add_argument("--img_size", type=int, default=IMG_SIZE)
+    ap.add_argument("--batch_size", type=int, default=BATCH_SIZE)
+    ap.add_argument("--num_workers", type=int, default=NUM_WORKERS)
+    ap.add_argument("--seed", type=int, default=SEED)
+    return ap.parse_args()
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Solar Panel Soiling Detection")
-    parser.add_argument("--data_dir", type=str, default=DATA_DIR,
-                         help="Path to dataset root (must contain train/val/test folders)")
-    parser.add_argument("--epochs", type=int, default=DEFAULT_EPOCHS,
-                         help="Epochs for initial (frozen backbone) training")
-    parser.add_argument("--fine_tune_epochs", type=int, default=DEFAULT_FINE_TUNE_EPOCHS,
-                         help="Epochs for optional fine-tuning stage (0 to skip)")
-    parser.add_argument("--out_dir", type=str, default=OUTPUT_DIR,
-                         help="Where to save the model, plots, and reports")
-    args = parser.parse_args()
+    args = parse_args()
+    out_dir = Path(args.out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    backbones = [b.strip() for b in args.backbones.split(",") if b.strip()]
+    print(f"Device: {device}" + (f" ({torch.cuda.get_device_name(0)})" if device.type == "cuda" else ""))
+    print(f"Backbones: {backbones}")
 
-    os.makedirs(args.out_dir, exist_ok=True)
+    loaders, train_counts = build_dataloaders(args.data_dir, args.img_size, args.batch_size, args.num_workers)
+    print("Train class counts:", dict(zip(CLASS_NAMES, map(int, train_counts))))
 
-    print("Loading datasets...")
-    train_ds, val_ds, test_ds = load_datasets(args.data_dir)
-    class_weights = get_class_weights(args.data_dir)
-    print(f"Computed Class Weights: {class_weights}")
-
-    print("Building model...")
-    model, base_model = build_model()
-    model.summary()
-
-    print("Training (frozen backbone)...")
-    history = train_initial(model, train_ds, val_ds, args.epochs, args.out_dir, class_weight=class_weights)
-    plot_history(history, args.out_dir, tag="initial")
-
-    if args.fine_tune_epochs > 0:
-        print("Fine-tuning top layers of the backbone...")
-        history_ft = train_fine_tune(
-            model, base_model, train_ds, val_ds, args.fine_tune_epochs, args.out_dir, class_weight=class_weights
+    results = []
+    for backbone in backbones:
+        print(f"\n=== {backbone} ===")
+        run_dir = out_dir / "runs" / backbone
+        r = train_backbone(
+            backbone, loaders, train_counts, CLASS_NAMES,
+            epochs=args.epochs, warmup_epochs=args.warmup_epochs, patience=args.patience,
+            seed=args.seed, device=device, run_dir=run_dir,
         )
-        plot_history(history_ft, args.out_dir, tag="finetune")
+        model = r["model"]
 
-    # Load best checkpoint for final evaluation and export
-    best_ft_path = os.path.join(args.out_dir, "best_model_finetuned.keras")
-    best_init_path = os.path.join(args.out_dir, "best_model.keras")
-    
-    best_checkpoint = best_ft_path if os.path.exists(best_ft_path) else best_init_path
-    if os.path.exists(best_checkpoint):
-        print(f"\nLoading best checkpoint from {best_checkpoint}...")
-        model = tf.keras.models.load_model(best_checkpoint)
+        probs, labels = predict_loader(model, loaders["test"], device, use_amp=device.type == "cuda")
+        test_metrics = compute_metrics(probs, labels, CLASS_NAMES)
+        plot_confusion_matrix(test_metrics["confusion_matrix"], CLASS_NAMES, run_dir / "confusion_matrix.png",
+                              title=f"{backbone}: confusion matrix (test set)")
 
-    print("Evaluating best model on test set...")
-    evaluate_model(model, test_ds, args.out_dir)
+        gpu_ms = measure_latency_ms(model, args.img_size, device) if device.type == "cuda" else None
+        cpu_ms = measure_latency_ms(model.to("cpu"), args.img_size, torch.device("cpu"), n_iters=15)
+        model.to(device)
 
-    final_path = os.path.join(args.out_dir, "solar_soiling_final_model.keras")
-    model.save(final_path)
-    print(f"\nDone. Final model saved to: {final_path}")
+        summary = {
+            "backbone": backbone,
+            "params_millions": round(count_parameters(model) / 1e6, 2),
+            "best_epoch": r["best_epoch"],
+            "epochs_run": r["epochs_run"],
+            "train_time_min": round(r["train_time_sec"] / 60, 1),
+            "val_macro_f1": round(r["best_val_macro_f1"], 4),
+            "val_accuracy": round(r["best_val_metrics"]["accuracy"], 4),
+            "test_accuracy": round(test_metrics["accuracy"], 4),
+            "test_macro_f1": round(test_metrics["macro_f1"], 4),
+            "test_roc_auc": None if test_metrics["roc_auc_ovr_macro"] is None else round(test_metrics["roc_auc_ovr_macro"], 4),
+            "latency_gpu_ms": None if gpu_ms is None else round(gpu_ms, 1),
+            "latency_cpu_ms": round(cpu_ms, 1),
+        }
+        results.append({**summary, "_state": r["best_state"], "_test_metrics": test_metrics,
+                        "_val_metrics": r["best_val_metrics"], "_history": r["history"]})
+
+        save_json({**test_metrics, "backbone": backbone, "split": "test"}, run_dir / "metrics.json")
+        save_json(r["history"], run_dir / "history.json")
+        print(f"  test: acc {test_metrics['accuracy']:.3f}  macro-F1 {test_metrics['macro_f1']:.3f}  "
+              f"| {summary['params_millions']} M params, {summary['latency_cpu_ms']} ms/img CPU")
+
+    # ---- Select by validation macro-F1 (never by test) --------------------- #
+    best = max(results, key=lambda r: (r["val_macro_f1"], -r["params_millions"]))
+    print(f"\nSelected backbone: {best['backbone']} (val macro-F1 {best['val_macro_f1']:.3f})")
+
+    public = [{k: v for k, v in r.items() if not k.startswith("_")} for r in results]
+    comparison = {
+        "selected": best["backbone"],
+        "selection_rule": "highest validation macro-F1 (ties -> fewer parameters)",
+        "trained_at": dt.datetime.now().isoformat(timespec="seconds"),
+        "args": {k: v for k, v in vars(args).items()},
+        "device": str(device),
+        "results": public,
+    }
+    save_json(comparison, out_dir / COMPARISON_PATH.name)
+    with open(out_dir / "comparison.md", "w") as f:
+        cols = ["backbone", "params_millions", "val_macro_f1", "val_accuracy", "test_accuracy",
+                "test_macro_f1", "test_roc_auc", "latency_cpu_ms", "latency_gpu_ms", "best_epoch", "train_time_min"]
+        f.write("| " + " | ".join(cols) + " |\n|" + "---|" * len(cols) + "\n")
+        for r in public:
+            f.write("| " + " | ".join(str(r[c]) for c in cols) + " |\n")
+
+    run_dir = out_dir / "runs" / best["backbone"]
+    for name in ("confusion_matrix.png", "training_curves.png"):
+        shutil.copy(run_dir / name, out_dir / name)
+    save_json({**best["_test_metrics"], "backbone": best["backbone"], "split": "test",
+               "val_macro_f1": best["val_macro_f1"], "val_accuracy": best["val_accuracy"]},
+              out_dir / "metrics.json")
+
+    torch.save({
+        "format_version": 1,
+        "backbone": best["backbone"],
+        "class_names": CLASS_NAMES,
+        "img_size": args.img_size,
+        "normalize": {"mean": IMAGENET_MEAN, "std": IMAGENET_STD},
+        "trained_at": comparison["trained_at"],
+        "params_millions": best["params_millions"],
+        "val_macro_f1": best["val_macro_f1"],
+        "test_accuracy": best["test_accuracy"],
+        "test_macro_f1": best["test_macro_f1"],
+        "latency_cpu_ms": best["latency_cpu_ms"],
+        "state_dict": best["_state"],
+    }, out_dir / FINAL_MODEL_PATH.name)
+
+    print("\n" + open(out_dir / "comparison.md").read())
+    print(f"Final model -> {out_dir / FINAL_MODEL_PATH.name}")
 
 
 if __name__ == "__main__":

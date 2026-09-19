@@ -1,5 +1,6 @@
-# Virtual environment
+# Virtual environments
 venv/
+.venv/
 ENV/
 env/
 
@@ -9,19 +10,26 @@ __pycache__/
 *$py.class
 .pytest_cache/
 
-# Dataset folders (too large for GitHub)
+# Datasets (too large for GitHub; see README for download instructions)
 data/
 raw_data/
+Faulty_solar_panel/
+Solar_Panel_Soiling_Image_dataset/
 *.zip
 *.tar.gz
 
-# Large model binaries (>100MB / binary weights)
-# If you want to push models, use Git LFS or releases
-outputs/*.keras
-outputs/*.h5
+# Model weights (>100 MB in total; distribute via Releases or Git LFS)
+outputs/*.pt
+outputs/*.pth
+outputs/runs/*/best_model.pt
+
+# Torch / Streamlit caches
+.streamlit/
+*.log.[0-9]*
 
 # OS / IDE files
 .DS_Store
 Thumbs.db
+desktop.ini
 .vscode/
 .idea/

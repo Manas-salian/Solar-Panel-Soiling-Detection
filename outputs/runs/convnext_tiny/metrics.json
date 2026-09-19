@@ -94,7 +94,5 @@
   ],
   "n_samples": 107,
   "backbone": "convnext_tiny",
-  "split": "test",
-  "val_macro_f1": 0.9367,
-  "val_accuracy": 0.9439
+  "split": "test"
 }
